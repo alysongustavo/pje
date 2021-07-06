@@ -1,9 +1,13 @@
 package br.jus.pje.controler;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -23,8 +27,9 @@ public class RoboPJE {
 
     private static String separador = "|";
 
-    public RoboPJE(String urlPrincipal) {
+    private InputStream arquivo;
 
+    public RoboPJE(String urlPrincipal) throws IOException {
         driver = new ChromeDriver();
         driver.get(urlPrincipal);
     }
@@ -104,18 +109,48 @@ public class RoboPJE {
         element.click();
     }
 
-    public void pesquisarProcessos() throws NumberFormatException, InterruptedException {
+    public void pesquisarProcessos() throws NumberFormatException, InterruptedException, IOException {
 
     	dormir(2);
 
+    	arquivo = new FileInputStream("C:\\Users\\gdasi\\IdeaProject\\pje\\src\\main\\resources\\filtro.properties");
+
+		Properties prop = new Properties();
+		prop.load(arquivo);
+
+		System.out.println();
+
+		String assunto = prop.getProperty("assunto");
+		String classeJudicial = prop.getProperty("classeJudicial");
+
+		String dataAtuacaoInicial = prop.getProperty("dataAtuacaoInicial");
+		String dataAtuacaoFinal = prop.getProperty("dataAtuacaoFinal");
+
+		String valorCausaInicial = prop.getProperty("valorCausaInicial");
+		String valorCausaFinal = prop.getProperty("valorCausaFinal");
+
     	WebElement element = driver.findElement(By.id("fPP:j_id226:assunto"));
-    	element.sendKeys("Inventario");
+    	element.sendKeys(assunto);
+
+    	if(!classeJudicial.isEmpty()){
+			element = driver.findElement(By.id("fPP:j_id235:classeJudicial"));
+			element.sendKeys(classeJudicial);
+		}
+
+    	if(!dataAtuacaoInicial.isEmpty() && !dataAtuacaoFinal.isEmpty()){
+			element = driver.findElement(By.id("fPP:dataAutuacaoDecoration:dataAutuacaoInicioInputDate"));
+			element.sendKeys(dataAtuacaoInicial);
+
+			element = driver.findElement(By.id("fPP:dataAutuacaoDecoration:dataAutuacaoFimInputDate"));
+			element.sendKeys(dataAtuacaoFinal);
+		}
 
     	element = driver.findElement(By.id("fPP:valorDaCausaDecoration:valorCausaInicial"));
-    	element.sendKeys("100000");
+    	element.sendKeys(valorCausaInicial);
+
 
     	element = driver.findElement(By.id("fPP:valorDaCausaDecoration:valorCausaFinal"));
-    	element.sendKeys("10000000");
+    	element.sendKeys(valorCausaFinal);
 
     	element = driver.findElement(By.id("fPP:searchProcessos"));
     	element.click();    	
@@ -208,7 +243,7 @@ public class RoboPJE {
     			}
 
 //    			RoboCENPROT celia = new RoboCENPROT(dado);
-//    			
+//
 //    			if (celia.temFofoca()) {
 //
 //	    			dados.add(dado);
