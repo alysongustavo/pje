@@ -113,7 +113,7 @@ public class RoboPJE {
 
     	dormir(2);
 
-    	arquivo = new FileInputStream("C:\\Users\\gdasi\\IdeaProject\\pje\\src\\main\\resources\\filtro.properties");
+    	/*arquivo = new FileInputStream("C:\\Users\\User\\IdeaProject\\pje\\src\\main\\resources\\filtro.properties");
 
 		Properties prop = new Properties();
 		prop.load(arquivo);
@@ -127,30 +127,31 @@ public class RoboPJE {
 		String dataAtuacaoFinal = prop.getProperty("dataAtuacaoFinal");
 
 		String valorCausaInicial = prop.getProperty("valorCausaInicial");
-		String valorCausaFinal = prop.getProperty("valorCausaFinal");
+		String valorCausaFinal = prop.getProperty("valorCausaFinal");*/
 
     	WebElement element = driver.findElement(By.id("fPP:j_id226:assunto"));
-    	element.sendKeys(assunto);
+    	element.sendKeys("Inventario"); // Informar o assunto do processo por padrão é Inventario
 
-    	if(!classeJudicial.isEmpty()){
-			element = driver.findElement(By.id("fPP:j_id235:classeJudicial"));
-			element.sendKeys(classeJudicial);
-		}
+		element = driver.findElement(By.id("fPP:j_id149:nomeParte"));
+		element.sendKeys("");
 
-    	if(!dataAtuacaoInicial.isEmpty() && !dataAtuacaoFinal.isEmpty()){
-			element = driver.findElement(By.id("fPP:dataAutuacaoDecoration:dataAutuacaoInicioInputDate"));
-			element.sendKeys(dataAtuacaoInicial);
+		element = driver.findElement(By.id("fPP:jurisdicaoComboDecoration:jurisdicaoCombo"));
+		element.sendKeys("27");
 
-			element = driver.findElement(By.id("fPP:dataAutuacaoDecoration:dataAutuacaoFimInputDate"));
-			element.sendKeys(dataAtuacaoFinal);
-		}
+		element = driver.findElement(By.id("fPP:j_id244:numeroDocumento"));
+		element.sendKeys("");
+
+		element = driver.findElement(By.id("fPP:dataAutuacaoDecoration:dataAutuacaoInicioInputDate"));
+		element.sendKeys("01/01/2018"); // Informar a data de inicio da consulta dos processos
+
+		element = driver.findElement(By.id("fPP:dataAutuacaoDecoration:dataAutuacaoFimInputDate"));
+		element.sendKeys("31/06/2018"); // Informar a data fim consulta dos processos
 
     	element = driver.findElement(By.id("fPP:valorDaCausaDecoration:valorCausaInicial"));
-    	element.sendKeys(valorCausaInicial);
-
+    	element.sendKeys("100000"); // Informar o valor da causa inicial
 
     	element = driver.findElement(By.id("fPP:valorDaCausaDecoration:valorCausaFinal"));
-    	element.sendKeys(valorCausaFinal);
+    	element.sendKeys("500000000000"); // Informar o valor da causa finaló
 
     	element = driver.findElement(By.id("fPP:searchProcessos"));
     	element.click();    	
